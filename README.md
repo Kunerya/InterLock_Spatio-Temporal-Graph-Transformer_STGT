@@ -1,6 +1,6 @@
 # InterLock Spatio-Temporal Graph Transformer (STGT)
 
-PyTorch implementation of the **Spatio-Temporal Graph Transformer (STGT)** for autonomous-driving scenarios, producing HE-friendly fixed-length embeddings from ego-centric interaction graphs for metric scenario similarity evaluation within the InterLock framework. **Ciphertext-domain-computation** module builds on the **CKKS** scheme provided by **TenSEAL** and contains three Python scripts that realize a privacy-preserving workflow between the data owner (user) and the platform.
+**InterLock** is an integrated framework for privacy-preserving scenario similarity computation and deduplication in shared autonomous-driving scenario libraries. Within InterLock, we provide a **PyTorch implementation of the Spatio-Temporal Graph Transformer (STGT)** that encodes ego-centric interaction graphs into fixed-length, homomorphic-encryption-friendly scenario embeddings for metric similarity evaluation. Building on these embeddings, the **ciphertext-domain-computation** module leverages the **CKKS** scheme in **TenSEAL** and consists of three Python scripts that implement an end-to-end privacy-preserving similarity-computation workflow between data owners (users) and the platform.
 
 This repository provides the reference implementation of the Spatio-Temporal Graph Transformer (STGT) used in InterLock, a privacy-preserving framework for ciphertext-domain similarity computation of autonomous driving scenarios, as illustrated below.
 
