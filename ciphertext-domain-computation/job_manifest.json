@@ -1,0 +1,34 @@
+{
+  "paths": {
+    "query_feature": "data/***.npy",
+    "query_encrypted": "query/***.npz",
+    "key_public": "keys/***_public.ctx",
+    "key_full": "keys/***_full.ctx",
+    "results_dir": "results/"
+  },
+  "platform_inputs": {
+    "candidate_dirs": [
+      "data\\A",
+      "data\\B"
+    ],
+    "label_excels": [
+      "data\\A_label.xlsx",
+      "data\\B_label.xlsx"
+    ],
+    "query_label": "交叉口通行"
+  },
+  "platform_outputs": {
+    "result_npz": "***.npz",
+    "candidates_txt": "***.txt"
+  },
+  "postprocess": {
+    "final_csv": "***.csv"
+  },
+  "meta": {
+    "version": "v1",
+    "created_at": "2025-09-16T11:28:33+08:00",
+    "updated_at": "2025-09-16T14:56:26+08:00"
+  },
+  "scene_name": "***",
+  "_manifest_path": "job_manifest.json"
+}

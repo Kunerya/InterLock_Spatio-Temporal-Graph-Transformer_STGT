@@ -1,0 +1,85 @@
+data:
+  pkl: data/***.pkl
+  index: data/***.csv
+  pair_scores_csv: data/***.csv
+  turn_label_mapping: data/turn_label_mapping.json
+  K_turn: 19
+
+model:
+  node_dim: 8
+  hidden: 256
+  emb_dim: 128
+  n_heads: 4
+  n_layers_spatial: 3
+  n_layers_temporal: 2
+  geo_dim: 3
+  nan_guard: true
+  renorm_embeddings: false
+
+train:
+  lr: 3e-4
+  epochs: 30
+  steps_per_epoch: 100
+  train_ratio: 0.8
+  ckpt_dir: checkpoints_v2/
+
+  pos_high_thresh: 0.7     # 高相似阈值
+  neg_low_thresh: 0.3     # 低相似阈值
+  # -------- 批大小 & 显存相关 --------
+  bs_triplet: 28
+  max_uniq_ids: 28
+  grad_accum_steps: 1
+
+  mem_guard:
+    warn_ratio: 0.72        # ~72% 显存开始收紧
+    hard_ratio: 0.80        # ~80% 显存强制拆批
+    empty_cache_every: 10
+
+  amp: true
+  compile: false
+  compile_mode: max-autotune
+
+  # -------- 损失相关超参 --------
+  pair_loss: huber     #huber or mse
+  alpha: 0.5                 # 固定 alpha
+  lambda_pair: 0.5         # 固定 lambda_pair
+  use_adaptive_margin: true
+  adaptive_margin_clip: [0.15, 0.8]
+  margin: 0.2
+  weight_from_epoch: 3
+  # -------- 预检（显存压测） --------
+  preflight:
+    enabled: false
+    steps: 24
+    forward_only: true
+    start_bs_triplet: 28
+    start_max_uniq_ids: 28
+    decay_on_oom: 0.5
+
+  # -------- pair-only 微调--------
+  pair_reg_steps: 80
+  pair_batch: 64
+
+  # -------- 评估 / checkpoint --------
+  eval_every: 1              # 每轮都做轻量评估
+  save_every: 1              # 每轮都存一个 ckpt（方便回溯）
+
+  # -------- 渐进日程（按之前训练记录调参） --------
+  schedule:
+    warmup_epochs: 5
+
+    neg_per_pos:
+      after: 6
+      value: 2
+
+    # 无监督样本：从 0.0 → 0.12（保持与之前训练记录一致，不关闭 unsup）
+    unsup_ratio:
+      start: 0.0
+      end: 0.2
+      until_epoch: 12
+    unsup_freeze_epochs: 8
+
+eval:
+  batch_size: 16
+  val_cap: 60
+  train_cap: 60
